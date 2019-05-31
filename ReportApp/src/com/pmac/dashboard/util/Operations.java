@@ -1,6 +1,7 @@
 package com.pmac.dashboard.util;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import com.pmac.dashboard.util.Util;
@@ -10,13 +11,10 @@ public final class Operations {
 	static String SPLIT_TEXT = "\\s+";
 	
 	public static String findMinimum(String path,int index1, int index2, int index3){
-		String line="";
-		String retCountry="";
-		
+		String line="", retCountry="";		
 		double retDiffer = Double.POSITIVE_INFINITY;
 
 		try (Scanner s = new Scanner(new File(path))) {
-		    s.nextLine(); // Excluding the header
             while (s.hasNextLine() &&(line = s.nextLine()) != null) {
             	try{
 	                String[] country = line.trim().split(SPLIT_TEXT);
@@ -29,14 +27,22 @@ public final class Operations {
 	                	retDiffer = diff;
 	                }
             	}
-            	catch(ArrayIndexOutOfBoundsException ae){	            		
+            	catch(ArrayIndexOutOfBoundsException ae){	 
+            		//log error
             	}
-            	catch(Exception e){	            		
+            	catch(Exception e){	   
+            		//log error
             	}
             }  
-		}catch(Exception e){			
+		}catch(FileNotFoundException e){
+			//log error
+		}
+		catch(Exception e ){
+			//log error
+		}
+		finally{
 		}
 		
-		return retCountry+" - "+retDiffer;
+		return retCountry+" - "+(int)retDiffer;
 	}
 }
